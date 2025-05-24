@@ -25,6 +25,8 @@ Actions:
 
 ## CCIP Contracts
 
+[CCIP](https://ccip.chain.link/address/0x1134584b96749fd4b597390a388210ea88f2fcdb)
+
 Arbitrum Mainnet:
 
 [0x1134584b96749fD4b597390a388210Ea88f2Fcdb](https://repo.sourcify.dev/42161/0x1134584b96749fD4b597390a388210Ea88f2Fcdb)

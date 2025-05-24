@@ -26,7 +26,7 @@ export const bridgeToCChain = async () => {
   const balanceARB = await smartAccount.getUnifiedERC20Balance(mcARB);
   console.log("ARB balance:", balanceARB);
 
-  const usdcAmount = parseUnits("1", 6);
+  const usdcAmount = parseUnits("1.5", 6);
   const arbAmount = parseUnits("1.2", 18);
 
   // Verificar si tenemos suficiente balance
@@ -53,6 +53,20 @@ export const bridgeToCChain = async () => {
     },
   });
 
+  const depositUSDCToSender = await smartAccount.buildComposable({
+    type: "default",
+    data: {
+      to: mcUSDC.addressOn(arbitrum.id),
+      abi: erc20Abi,
+      functionName: "transfer",
+      args: [
+        chainLinkSenderContract,
+        usdcAmount
+      ],
+      chainId: arbitrum.id,
+    },
+  });
+
   const sendToCChain = await smartAccount.buildComposable({
     type: "default",
     data: {
@@ -60,13 +74,26 @@ export const bridgeToCChain = async () => {
       abi: ChainLinkSenderAbi,
       functionName: "sendMessagePayLINK",
       args: [
-        "14767482510784806043",
+        "6433500567565415381",
         "order_10101",
         usdcAmount,
       ],
       chainId: arbitrum.id,
     },
   });
+
+ /*  const acceptOwnership = await smartAccount.build({
+    type: "default",
+    data: {
+      chainId: arbitrum.id,
+      calls: [
+        {
+          to: chainLinkSenderContract,
+          data: "0x79ba5097" // acceptOwnership() function selector
+        },
+      ],
+    },
+  }); */
 
   const meeClient = await createMeeClient({
     account: smartAccount,
@@ -75,7 +102,7 @@ export const bridgeToCChain = async () => {
 
   const { hash } = await meeClient.executeQuote({
     quote: await meeClient.getQuote({
-      instructions: [approveSendToCChain, sendToCChain],
+      instructions: [approveSendToCChain, depositUSDCToSender, sendToCChain],
       feeToken: {
         address: mcUSDC.addressOn(arbitrum.id),
         chainId: arbitrum.id,
@@ -87,7 +114,9 @@ export const bridgeToCChain = async () => {
 
   // Wait for the transaction to complete
   const receipt = await meeClient.waitForSupertransactionReceipt({ hash });
-  console.log(`Successful execution: ${receipt.hash}`);
+  console.log(`Successful execution: ${receipt}`);
 
   return receipt;
 };
+
+bridgeToCChain();
