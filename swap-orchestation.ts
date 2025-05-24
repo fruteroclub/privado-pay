@@ -103,7 +103,7 @@ export const swapOrchestation = async () => {
       quote: await meeClient.getQuote({
         instructions: [appoveSwapInstructions, swapInstructions],
         feeToken: {
-          address: mcARB.addressOn(arbitrum.id),
+          address: mcUSDC.addressOn(arbitrum.id),
           chainId: arbitrum.id,
         }
       })

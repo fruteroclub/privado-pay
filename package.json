@@ -17,6 +17,7 @@
     "viem": "^2.30.0"
   },
   "scripts": {
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "bridge-cchain": "bun run bridge-cchain-orchestation.ts"
   }
 }

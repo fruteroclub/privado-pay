@@ -1,5 +1,5 @@
 import { erc20Abi, parseUnits } from "viem";
-import { arbitrumSepolia, avalancheFuji } from "viem/chains";
+import { arbitrum } from "viem/chains";
 
 import {
   createMeeClient,
@@ -12,12 +12,13 @@ import {
 import { ChainLinkSenderAbi } from "./utils/chainlink-abi";
 import { createMultichainSmartAccount } from "./utils/multichain-smart-account";
 
-const chainLinkSenderContract = "0xBf81BA7B8fB1E1e06ceA839C2c7B8d3E8392ebE4";
+const chainLinkSenderContract = "0x1134584b96749fD4b597390a388210Ea88f2Fcdb";
 
 export const bridgeToCChain = async () => {
   const smartAccount: MultichainSmartAccount =
     await createMultichainSmartAccount();
 
+  console.log("Smart Account Address:", smartAccount.addressOn(arbitrum.id));
   // Check token balance across chains
   const balance = await smartAccount.getUnifiedERC20Balance(mcUSDC);
   console.log("USDC balance:", balance);
@@ -37,18 +38,18 @@ export const bridgeToCChain = async () => {
   const approveSendToCChain = await smartAccount.buildComposable({
     type: "default",
     data: {
-      to: mcUSDC.addressOn(arbitrumSepolia.id),
+      to: mcUSDC.addressOn(arbitrum.id),
       abi: erc20Abi,
       functionName: "approve",
       args: [
         chainLinkSenderContract,
         runtimeERC20BalanceOf({
-          targetAddress: smartAccount.addressOn(arbitrumSepolia.id, true),
-          tokenAddress: mcUSDC.addressOn(arbitrumSepolia.id),
+          targetAddress: smartAccount.addressOn(arbitrum.id, true),
+          tokenAddress: mcUSDC.addressOn(arbitrum.id),
           constraints: executionConstraints,
         }),
       ],
-      chainId: arbitrumSepolia.id,
+      chainId: arbitrum.id,
     },
   });
 
@@ -63,7 +64,7 @@ export const bridgeToCChain = async () => {
         "order_10101",
         usdcAmount,
       ],
-      chainId: arbitrumSepolia.id,
+      chainId: arbitrum.id,
     },
   });
 
@@ -76,8 +77,8 @@ export const bridgeToCChain = async () => {
     quote: await meeClient.getQuote({
       instructions: [approveSendToCChain, sendToCChain],
       feeToken: {
-        address: mcUSDC.addressOn(arbitrumSepolia.id),
-        chainId: arbitrumSepolia.id,
+        address: mcUSDC.addressOn(arbitrum.id),
+        chainId: arbitrum.id,
       },
     }),
   });
