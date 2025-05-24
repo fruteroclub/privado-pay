@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "bun run index.ts",
-    "bridge-cchain": "bun run bridge-cchain-orchestation.ts"
+    "bridge-cchain": "bun run bridge-cchain-orchestation.ts",
+    "call-fuji": "bun run call-fuji-contract.ts"
   }
 }
