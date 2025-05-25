@@ -64,6 +64,8 @@ export const setOrder = async (orderId: string, amount: bigint) => {
         const receipt = await publicClient.waitForTransactionReceipt({ hash });
         console.log("Transaction receipt:", receipt);
 
+        //todo  call setnumberscon parametros address , orderid, monto 
+
         return receipt;
     } catch (error) {
         console.error("Error in storeOrder:", error);
@@ -75,4 +77,6 @@ export const setOrder = async (orderId: string, amount: bigint) => {
 const orderId = "order_10101";
 const amount = parseUnits("1", 6); // 1.5 USDC
 await setOrder(orderId, amount);
+
+#
   
