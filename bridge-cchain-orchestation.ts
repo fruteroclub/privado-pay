@@ -118,5 +118,3 @@ export const bridgeToCChain = async () => {
 
   return receipt;
 };
-
-bridgeToCChain();
