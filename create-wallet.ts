@@ -1,10 +1,14 @@
-import { privateKeyToAccount } from 'viem/accounts'
+import 'dotenv/config';
+import { privateKeyToAccount, generatePrivateKey } from 'viem/accounts'
 
-const privateKey = process.env.PRIVATE_KEY as `0x${string}`;
-// const privateKey = generatePrivateKey();
+const privateKey = process.env.PRIVATE_KEY
 
-const account = privateKeyToAccount(privateKey) 
- 
+if (!privateKey) {
+    throw new Error('No se pudo obtener la private key');
+}
+
+const account = privateKeyToAccount(privateKey as `0x${string}`);
+
 export const createWallet = () => {
     return {
         account

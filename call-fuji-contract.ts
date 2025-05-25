@@ -63,7 +63,7 @@ export const setOrder = async (orderId: string, amount: bigint) => {
         // Esperar a que la transacción sea minada
         const receipt = await publicClient.waitForTransactionReceipt({ hash });
         console.log("Transaction receipt:", receipt);
-
+        
         return receipt;
     } catch (error) {
         console.error("Error in storeOrder:", error);
@@ -71,8 +71,3 @@ export const setOrder = async (orderId: string, amount: bigint) => {
     }
 };
 
-// Ejemplo de uso:
-const orderId = "order_10101";
-const amount = parseUnits("1", 6); // 1.5 USDC
-await setOrder(orderId, amount);
-  

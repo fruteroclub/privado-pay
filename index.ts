@@ -15,6 +15,5 @@ import { bridgeToCChain } from "./bridge-cchain-orchestation";
     }
     console.log("Done");
   };
-  
-  main()
+
   
